@@ -1,0 +1,189 @@
+﻿@model Online_Entrance.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+@Styles.Render("~/content/csslib")
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-repeat:no-repeat;
+        background:url("/Images/register.jpg");
+         background-position: center;
+         background-attachment:fixed;
+         background-size:cover;
+         
+    }
+
+    input, select {
+        max-width: 250px;
+        margin: auto;
+    }
+
+    main {
+        
+        
+         
+    }
+
+    .form-horizontal {
+        width: 400px;
+        margin: auto;
+        text-align: center;
+        box-shadow: 5px 5px 10px;
+        border-radius: 10px;
+        margin-top: 100px;
+    }
+
+    h4 {
+        color: maroon;
+        margin: auto;
+        padding-top: 15px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 550;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-group {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .btn {
+        margin-bottom: 20px;
+    }
+    .field-validation-error,
+label.error { 
+    color: red;
+}
+
+.input-validation-error,
+input.error {
+    border: 2px solid red;
+}
+    
+</style>
+<main>
+    
+
+
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Create a new account.</h4>
+        <hr />
+        //@Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FullName)
+
+            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FullName)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.SchoolName)
+
+            @Html.TextBoxFor(m => m.SchoolName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.SchoolName)
+
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.SeeSymbolNumber)
+
+            @Html.TextBoxFor(m => m.SeeSymbolNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.SeeSymbolNumber)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Gpa)
+
+            @Html.TextBoxFor(m => m.Gpa, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Gpa)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Dob)
+            <input type="date" id="Dob" name="Dob" class="form-control" required>
+            @*@Html.TextBoxFor(m => m.Dob, "{0:d MMM yyy}", new { @class = "form-control" })*@
+            @Html.ValidationMessageFor(m => m.Dob)
+
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ContactNumber)
+
+            @Html.TextBoxFor(m => m.ContactNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ContactNumber)
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address)
+
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Address)
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.GuardianName)
+
+            @Html.TextBoxFor(m => m.GuardianName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.GuardianName)
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.GuardianContact)
+
+            @Html.TextBoxFor(m => m.GuardianContact, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.GuardianContact)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Faculty)
+
+            @Html.DropDownListFor(m => m.Faculty, new SelectList(Model.Faculties, "Name", "Name"), "Select Faculty", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Faculty)
+
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email)
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password)
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword)
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+
+        </div>
+
+
+
+        <input type="submit" class="btn btn-primary" value="Register" />
+
+
+    }
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

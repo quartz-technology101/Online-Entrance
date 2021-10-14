@@ -1,0 +1,111 @@
+﻿
+
+<style>
+    body {
+        background-image: url(/Images/NOTE.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+    }
+
+    p {
+        position: absolute;
+        top: 35%;
+        left: 23%;
+        font-size: 20px;
+        font-weight: 500;
+        color: #893667;
+    }
+    p span{
+        padding-left:17px;
+    }
+    button {
+        position:absolute;
+        top:70%;
+        left:30%;
+        background:#893667;
+        color:white;
+        width:150px;
+        height:50px;
+        font-size:18px;
+        font-weight:500;
+        box-shadow:3px 3px 5px black;
+        cursor:pointer;
+    }
+    button:hover{
+        top:69%;
+    }
+    h2{
+        color:#893667;
+        position:absolute;
+        top:23%;
+        left:45%;
+        border-bottom:2px solid #893667;
+        width:170px;
+        text-align:center;
+    }
+    .poster{
+        width:1000px;
+        margin-left:20px;
+        margin-top:60px;
+        height:580px;
+        background-image: url(/Images/poster.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+    }
+    .finish{
+        position:absolute;
+        top:40%;
+        left:80%;
+        background:#893667;
+        color:white;
+        width:150px;
+        height:50px;
+        font-size:18px;
+        font-weight:500;
+        text-decoration:none;
+        text-align:center;
+        line-height:48px;
+        border:2px solid white;
+        border-radius:10px;
+
+    }
+    .finish:hover{
+        top:39%;
+    }
+</style>
+
+<main>
+    <h2>Instructions</h2>
+
+    <p>
+        1. Click on the Best Alternative only once. Once you have clicked one option, you  <br />
+        <span>cannot shift to another.</span><br /><br />
+        2. Attempt all Questions. There is no negative marking for wrong answer.<br /><br />
+        3. Submit your answers.
+    </p>
+</main>
+
+<button>Got it.</button>
+<div class="poster">
+    
+</div>
+<a class="finish" href="/Thankyou">Finish</a>
+
+@Scripts.Render("~/bundles/lib")
+<script>
+    $(document).ready(function () {
+        $(".poster").hide();
+        $(".finish").hide();
+        $("button").click(function () {
+            $("button").hide();
+            $(".poster").show();
+            $("main").hide();
+            $(".finish").show();
+            $("body").css("background", "rgba(30,30,30,.86)");
+        });
+    });
+</script>

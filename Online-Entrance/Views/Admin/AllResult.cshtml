@@ -1,0 +1,125 @@
+﻿
+@Styles.Render("~/content/csslib")
+
+<style>
+    body {
+        font-family: 'poppins',sans-serif;
+        background:white;
+        font-weight:500;
+    }
+
+
+
+
+    main {
+        margin: 100px;
+    }
+
+
+
+    h2 {
+        width: 12%;
+        margin: auto;
+        text-align: center;
+        margin-top: 100px;
+        font-family: 'poppins',sans-serif;
+        border-bottom: 2px solid #823966;
+        color: #823966;
+    }
+
+   
+    #marks {
+        color:green;
+        text-align:center;
+    }
+
+    @@media screen and (max-width: 768px) {
+        h2 {
+            width: 190px;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+
+        main {
+            margin: 10px;
+        }
+
+    }
+</style>
+<main>
+    <h2>Results</h2>
+    <br />
+    <br /><br />
+
+    <table id="results" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>School Name</th>
+                <th>Gpa</th>
+                <th>Guardian Name</th>
+                <th>Guardian Contact</th>
+                <th>Faculty</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+       
+        <tbody>
+            
+
+        </tbody>
+    </table>
+</main>
+
+<img class="big-circle" src="/Images/big-eclipse.svg" alt="">
+<img class="medium-circle" src="/Images/mid-eclipse.svg" alt="">
+<img class="small-circle" src="/Images/small-eclipse.svg" alt="">
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            $.getJSON("/api/results").done(function (data) {
+                var results = data;
+                console.log(results);
+                var users = @Html.Raw(Json.Encode(Model));
+
+                console.log(users);
+                var user=0;
+                results.forEach(function(individual){
+                    var score=0;
+                    individual.forEach(function(question){
+
+                        if(question.isCorrect){
+                            score=score+1;
+                   
+                        }
+                
+                    });
+                    $("tbody").append("<tr id='"+user+"'></tr>");
+                    $("#"+user).append("<td>"+users[user].UserName+"</td>");
+                    $("#"+user).append("<td>"+users[user].FullName+"</td>");
+                    $("#"+user).append("<td>"+users[user].SchoolName+"</td>");
+                    $("#"+user).append("<td>"+users[user].Gpa+"</td>");
+                    $("#"+user).append("<td>"+users[user].GuardianName+"</td>");
+                    $("#"+user).append("<td>"+users[user].GuardianContact+"</td>");
+                    $("#"+user).append("<td>"+users[user].Faculty+"</td>");
+                    $("#"+user).append("<td id='marks'>"+score+"</td>");
+                    user=user+1;
+                });
+       
+
+        
+        
+            });
+        
+         });
+                
+    </script>
+}
+
+
+ 

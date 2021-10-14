@@ -1,0 +1,406 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "- Quiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/content/toastr")
+<style>
+    main {
+        margin: 70px 20px;
+    }
+
+    .report #score {
+        background: green;
+        color: white;
+        font-size: 20px;
+        height: 50px;
+        line-height: 50px;
+    }
+</style>
+
+
+<main>
+    <div class="timer">
+        <h5>Total Time</h5>
+        <p id="demo">3 HRS </p>
+    </div>
+    <table class="topics">
+        <tr class="topic" id="maths"><td>Maths</td></tr>
+        <tr class="topic" id="english"><td>English</td></tr>
+        <tr class="topic" id="gk"><td>GK</td></tr>
+    </table>
+
+
+
+
+    <div class="questionsMaths questions">
+        <div class="title"><h2>Mathematics</h2></div>
+    </div>
+    <div class="questionsEnglish questions">
+        <div class="title"><h2>English</h2></div>
+    </div>
+    <div class="questionsGk questions">
+        <div class="title"><h2>GK</h2></div>
+    </div>
+
+
+
+
+    <div class="number"><p>9</p>Questions Remaining</div>
+
+
+
+</main>
+
+
+
+
+
+<button class="submitbtn">Submit</button>
+<style>
+    .banner {
+        position: absolute;
+        top: 100px;
+        left: 80%;
+        height: 550px;
+        width: 270px;
+        background-image: url(/Images/Banner3.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+</style>
+
+<div class="banner"></div>
+
+
+
+
+<div class="mail" style="   background:red;
+    width:700px;
+    margin:auto">
+    <style>
+        .report {
+            background: rgb(252, 252, 223);
+            width: 700px;
+            margin: auto;
+            text-align: center;
+            margin-top: 75px;
+        }
+
+            .report p {
+                font-weight: 500;
+                margin-top: 5px;
+            }
+
+                .report p span {
+                    font-weight: normal;
+                    color: red;
+                }
+
+        .tableReport {
+            margin-top: 20px;
+            width: 700px;
+            margin: auto;
+            border: 1px solid black;
+            border-collapse: collapse;
+            font-size: 17px;
+        }
+
+            .tableReport tr td, .tableReport tr th {
+                border: 1px solid black;
+                width: 200px;
+                height: 50px;
+            }
+
+            .tableReport tr th {
+                font-weight: 500;
+                color: #893667;
+            }
+
+        .report #score {
+            background: green;
+            color: white;
+            font-size: 20px;
+            height: 50px;
+            line-height: 50px;
+        }
+    </style>
+    <div class="report">
+        <p>Student Name:   <span>Aayush Sapkota</span></p>
+        <p>Email:   <span>@User.Identity.Name</span></p>
+        <table class="tableReport">
+            <tr id="0">
+                <th>Q.N</th>
+                <th>Maths</th>
+                <th>English</th>
+                <th>Gk</th>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+            $(document).ready(function () {
+
+                var questionsUrl = "http://localhost:17130/api/questions";
+
+                $(".report").hide();
+
+
+
+                $.getJSON(questionsUrl).done(function (data) {
+                    var questions = data;
+                    var questionsRemaining=9;
+                    var score=0;
+
+                    $("#maths").attr({"clicked":"yes","n":"first"});
+                    $("#maths").siblings().attr("n","first");
+                    myFunction();
+
+                    $(".topics .topic").click(function () {
+                        $(this).siblings(".topic").attr("clicked", "not");
+                        $(this).attr("clicked", "yes");
+
+
+
+                        myFunction();
+                    });
+
+                    //function getSet()
+                    function getSet(topicName,name) {
+                        questions=data;
+                        questions=questions.filter(q => q.topic.name==name);
+                        var q = 0;
+
+                        for (q; q < 3; q++) {
+                            var question = questions[q];
+                            var questionInSentence = question.questionSentence;
+                            var optionI = question.option1;
+                            var optionII = question.option2;
+                            var optionIII = question.option3;
+                            var optionIV = question.option4;
+
+                            $(topicName).append($("<div/>", { id: "question"+name + (q + 1), "class": "question" }));
+                            $("#question"+name + (q + 1)).append("<h2>I am heading.</h2>");
+                            $("#question"+name + (q + 1)).append($("<div/>", { id: "options" +name+ (q + 1), "class": "options" }));
+                            $("#options"+name + (q + 1)).append("<button class='option1'></button>",
+                                "<button class='option2'></button>", "<button class='option3'></button>"
+                                , "<button class='option4'></button>");
+
+                            $("#question" +name+ (q + 1) + " h2").text(questionInSentence);
+                            $("#options" +name+ (q + 1) + " .option1").text(optionI);
+                            $("#options" + name+(q + 1) + " .option2").text(optionII);
+                            $("#options" +name+ (q + 1) + " .option3").text(optionIII);
+                            $("#options" +name+ (q + 1) + " .option4").text(optionIV);
+                        }
+
+                        $(".options button").click(function () {
+                            var clickedButton = $(this);
+                            clickedButton.attr("selected", "True");
+                            clickedButton.css({"background": "#03649c",
+                                "border":"2px solid white",
+                                "box-shadow": "3px 3px 10px black",
+                                "color":"white"});
+
+
+                            var clickedOptions = clickedButton.parent(".options");
+                            clickedOptions.attr('clicked', 'yes');
+                            if (clickedOptions.attr('clicked') == 'yes')
+                                clickedOptions.find("button").prop('disabled', true);
+
+                        });
+
+
+
+                    }
+
+                    //myFunction
+                    function myFunction() {
+                        var topic;
+                        //if else
+                         if ($(".topics #maths").attr("clicked") == "yes") {
+                            topic = "maths";
+                            $("#maths").css({ "background": "#893667", "color": "white", "box-shadow": "3px 3px 5px black" });
+                            $("#maths").siblings(".topic").css({ "background": "white", "color": "#893667" });
+                         }
+
+                         else if ($(".topics #english").attr("clicked") == "yes") {
+                             topic = "english";
+                             $("#english").css({ "background": "#893667", "color": "white", "box-shadow": "3px 3px 5px black" });
+                             $("#english").siblings(".topic").css({ "background": "white", "color": "#893667" });
+                         }
+                        else  {
+                            topic = "gk";
+                            $("#gk").css({ "background": "#893667", "color": "white", "box-shadow": "3px 3px 5px black" });
+                            $("#gk").siblings(".topic").css({ "background": "white", "color": "#893667" });
+                        }
+
+                        //switch case
+                        switch (topic) {
+                            case "maths":
+                                if($("#maths").attr("n")=="first"){
+                                    var name="Maths";
+                                    var topicName=$(".questionsMaths");
+                                    getSet(topicName,name);
+                                    $("#maths").attr("n","many");
+
+                                    $(".questionsMaths").show();
+                                    $(".questionsEnglish").hide();
+                                    $(".questionsGk").hide();
+
+                                    $(".questionsMaths .question .options button").click(function(){
+                                        questionsRemaining=questionsRemaining-1;
+                                        $(".number p").text(questionsRemaining);
+                                    });
+
+
+                                }
+                                else {
+                                    $(".questionsMaths").show();
+                                    $(".questionsEnglish").hide();
+                                    $(".questionsGk").hide();
+
+
+                                }
+
+                                break;
+                            case "english":
+                                if($("#english").attr("n")=="first"){
+                                    var name="English";
+                                    var topicName=$(".questionsEnglish");
+                                    getSet(topicName,name);
+                                    $("#english").attr("n","many");
+
+                                    $(".questionsEnglish").show();                                  
+                                    $(".questionsMaths").hide();
+                                    $(".questionsGk").hide();
+
+                                    $(".questionsEnglish .question .options button").click(function(){
+                                        questionsRemaining=questionsRemaining-1;
+                                        $(".number p").text(questionsRemaining);
+                                    });
+
+
+                                }
+                                else {
+                                    $(".questionsEnglish").show();
+                                  
+                                    $(".questionsMaths").hide();
+                                    $(".questionsGk").hide();
+
+
+                                }
+
+                                break;
+
+                            case "gk":
+                                if($("#gk").attr("n")=="first"){
+                                    var name="Gk";
+                                    var topicName=$(".questionsGk");
+                                    getSet(topicName,name);
+                                    $("#gk").attr("n","many");
+
+                                    $(".questionsGk").show();
+                                    $(".questionsMaths").hide();
+                                    $(".questionsEnglish").hide();
+
+                                    $(".questionsGk .question .options button").click(function(){
+                                        questionsRemaining=questionsRemaining-1;
+                                        $(".number p").text(questionsRemaining);
+                                    });
+
+
+                                }
+                                else {
+                                    $(".questionsGk").show();
+                                    
+                                    $(".questionsMaths").hide();
+                                    $(".questionsEnglish").hide();
+                                }
+                                break;
+                        }
+                    }
+
+
+
+
+                    $(".submitbtn").click(function(){
+
+                        $(this).hide();
+                        $("main").hide();
+                        $(".report").show();
+                        $(".options button").prop("disabled",false);
+
+                        var prasnas=data;
+
+                        var z=0
+
+
+                        for (var i=1;i<4;i++){
+
+                            var mathsOption=$("#optionsMaths"+i+" "+"button[selected='selected']").text();
+                            prasnas=data;
+                            prasnas=prasnas.filter(q => q.topic.name=="Maths");
+
+                            if(prasnas[z].correctAnswer==mathsOption){
+                                score = score + 1;
+                            }
+
+                            var englishOption=$("#optionsEnglish"+i+" "+"button[selected='selected']").text();
+                            prasnas=data;
+                            prasnas=prasnas.filter(q => q.topic.name=="English");
+
+                            if(prasnas[z].correctAnswer==englishOption){
+                                score = score + 1;
+                            }
+
+                            var gkOption=$("#optionsGk"+i+" "+"button[selected='selected']").text();
+                            prasnas=data;
+                            prasnas=prasnas.filter(q => q.topic.name=="Gk");
+
+                            if(prasnas[z].correctAnswer==gkOption){
+                                score = score + 1;
+                            }
+
+                            $(".tableReport").append("<tr id="+i+">"+"</tr>");
+                            $("#"+i).append("<td>"+i+"</td>");
+                            $("#"+i).append("<td>"+mathsOption+"</td>");
+                            $("#"+i).append("<td>"+englishOption+"</td>");
+                            $("#"+i).append("<td>"+gkOption+"</td>");
+
+                            z=z+1
+                        }
+                        $(".report").append("<div id='score'>"+"Score: "+score+"</div>");
+
+                        var vm={content: $(".mail").html()};
+                        $.ajax({
+                            url:'@Url.Action("SendMail", "Exam")',
+                            method: "POST",
+                            data: vm
+
+                        }).done(function () {
+                            toastr.success("Submitted successfully.");
+                        }).fail(function () {
+                            toastr.error("Something went wrong.");
+                        });
+
+
+                    });
+
+                });
+
+            });
+
+    </script>
+}
+
+
+
+
+
+

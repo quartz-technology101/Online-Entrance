@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/content/csslib")
+
+<style>
+    body {
+        font-family: 'poppins',sans-serif;
+        background: rgb(252, 252, 223);
+    }
+
+
+
+
+    main {
+        margin: 100px;
+    }
+
+
+
+    h2 {
+        width: 12%;
+        margin: auto;
+        text-align: center;
+        margin-top: 100px;
+        font-family: 'poppins',sans-serif;
+        border-bottom: 2px solid #823966;
+        color:#823966;
+    }
+
+    @@media screen and (max-width: 768px) {
+        h2 {
+            width: 190px;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+
+        main {
+            margin: 10px;
+        }
+    }
+</style>
+<main>
+    <h2>Users</h2>
+    <br />
+    <br /><br />
+
+    <table id="users" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>DOB</th>
+                <th>School Name</th>
+                <th>Faculty</th>
+                <th>GPA</th>
+                <th>Guardian Name</th>
+                <th>Guardian Contact</th>
+                <th>Registered Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    </table>
+</main>
+
+<img class="big-circle" src="/Images/big-eclipse.svg" alt="">
+<img class="medium-circle" src="/Images/mid-eclipse.svg" alt="">
+<img class="small-circle" src="/Images/small-eclipse.svg" alt="">
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            var table = $("#users").DataTable({
+                ajax:{
+                    url:"/api/users",
+                    dataSrc: ""
+                },
+                columns:[
+                    {
+                        data:"fullName",
+                        render:function(data,type,applicationUser){
+                            return "<p>"+applicationUser.fullName+"</p>";
+                        }
+                    },
+                     {
+                         data: "email",
+                         render: function (data, type, applicationUser) {
+                             return "<a href='/admin/result?username="+data+"'>" + applicationUser.email + "</a>";
+                         }
+
+
+                     },
+                    {
+                        data: "contactNumber",
+                        render: function (data, type, applicationUser) {
+                            return "<p>" + applicationUser.contactNumber + "</p>";
+                        }
+                    },
+                    {
+                        data: "address",
+                        render: function (data, type, applicationUser) {
+                            return "<p>" + applicationUser.address + "</p>";
+                        }
+
+
+                    },
+                    {
+                        data: "dob",
+                        render: function (data, type, applicationUser) {
+                            return "<p>" + applicationUser.dob + "</p>";
+                        }
+                    },
+                     {
+                         data: "schoolName",
+                         render: function (data, type, applicationUser) {
+                             return "<p>" + applicationUser.schoolName + "</p>";
+                         }
+                     },
+                      {
+                          data: "faculty",
+                          render: function (data, type, applicationUser) {
+                              return "<p>" + applicationUser.faculty + "</p>";
+                          }
+                      },
+                       {
+                           data: "gpa",
+                           render: function (data, type, applicationUser) {
+                               return "<p>" + applicationUser.gpa + "</p>";
+                           }
+                       },
+                        {
+                            data: "guardianName",
+                            render: function (data, type, applicationUser) {
+                                return "<p>" + applicationUser.guardianName + "</p>";
+                            }
+                        },
+                         {
+                             data: "guardianContact",
+                             render: function (data, type, applicationUser) {
+                                 return "<p>" + applicationUser.guardianContact + "</p>";
+                             }
+                         },
+                          {
+                              data: "registeredDate",
+                              render: function (data, type, applicationUser) {
+                                  return "<p>" + applicationUser.registeredDate + "</p>";
+                              }
+                          }
+
+                ]
+            });
+
+            //$("#users").on("click",".ind-result",function () {
+            //    $(this).css("background", "red");
+            //    var vm = {
+            //        userName: "",
+            //    };
+            //    $.ajax({
+            //        url: '/Admin/Result',
+            //        method: "POST",
+            //        data: vm
+
+            //    }).done(function () {
+            //        toastr.success("Submitted successfully.");
+            //    }).fail(function () {
+            //        toastr.error("Something went wrong.");
+            //    });
+            //});
+
+
+
+        });
+
+
+    </script>
+   
+}

@@ -1,0 +1,90 @@
+﻿@using Online_Entrance.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+@Styles.Render("~/content/csslib")
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    input {
+        max-width: 250px;
+        margin: auto;
+    }
+
+    main {
+        margin-top: 100px;
+    }
+    .form-horizontal {
+        width: 400px;
+        height:400px;
+        margin: auto;
+        text-align: center;
+        box-shadow: 5px 5px 10px;
+        border-radius: 10px;
+    }
+
+    h4 {
+        color: maroon;
+        margin: auto;
+        padding-top: 15px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 550;
+        font-family: 'Poppins', sans-serif;
+    }
+    .form-group {
+        text-align: center;
+        margin-top: 25px;
+    }
+    
+</style>
+<main>
+
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Log in</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div id="email" class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+        <div id="password" class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+        </div>
+        <div class="form-group">
+
+            <input type="submit" value="Log in" class="btn btn-primary" />
+
+        </div>
+        <p>
+            @Html.ActionLink("Register as a new user", "Register")
+        </p>
+        @* Enable this once you have account confirmation enabled for password reset functionality
+            <p>
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+            </p>*@
+    }
+    @*<div class="col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>*@
+</main>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

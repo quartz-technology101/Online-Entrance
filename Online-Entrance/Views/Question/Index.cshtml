@@ -1,0 +1,155 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/content/csslib")
+
+<style>
+    body {
+        font-family: 'poppins',sans-serif;
+        background: white;
+    }
+
+    nav {
+        background: #893667;
+    }
+
+    .nav-links li a {
+        color: white;
+    }
+
+    .logo-container a {
+        color: white;
+    }
+
+        .logo-container a:hover {
+            text-decoration: none;
+            color: white;
+        }
+
+    main {
+        margin: 100px;
+    }
+
+    button {
+        width: 150px;
+        height: 40px;
+        border-radius: 10px;
+        background: white;
+        border: 2px solid #893667;
+        color: #893667;
+    }
+
+        button:hover {
+            color: white;
+            background: #893667;
+            box-shadow: 3px 3px 5px black;
+            border: 2px solid white;
+        }
+
+    h2 {
+        width: 15%;
+        margin: auto;
+        text-align: center;
+        margin-top: 100px;
+        font-family: 'poppins',sans-serif;
+        border-bottom: 2px solid black;
+        opacity: 0.9;
+    }
+
+    @@media screen and (max-width: 768px) {
+        h2 {
+            width: 190px;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+
+        main {
+            margin: 10px;
+        }
+
+        button {
+            width: 95px;
+        }
+    }
+</style>
+<main>
+    <h2>Questions</h2>
+    <br />
+    <a href="/questions/new"><p class="btn btn-primary">New Question</p></a>
+    <br /><br />
+
+    <table id="questions" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Topic</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+    </table>
+</main>
+
+<img class="big-circle" src="/Images/big-eclipse.svg" alt="">
+<img class="medium-circle" src="/Images/mid-eclipse.svg" alt="">
+<img class="small-circle" src="/Images/small-eclipse.svg" alt="">
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            var table = $("#questions").DataTable({
+                ajax:{
+                    url:"/api/questions",
+                    dataSrc:""
+                },
+                columns:[
+                    {
+                        data:"questionSentence",
+                        render:function(data,type,question){
+                            return "<p>"+question.questionSentence+"</p>";
+                        }
+                    },
+                     {
+                         data: "topic.name"
+
+
+                     },
+                    {
+                        data:"id",
+                        render:function(data) {
+                            return "<button class='js-delete' data-question-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+            $("#questions").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure want to delete this customer?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/questions/" + button.attr("data-question-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+
+            });
+
+
+
+        });
+
+
+    </script>
+}

@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body{
+        background-image: url(/Images/homepage.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 110% 110%;
+        background-color:rgba(30,30,30,.86);
+    }
+    
+   
+    #start{
+        position:absolute;
+        top:80%;
+        margin-left:200px;
+        width:150px;
+        height:50px;
+        color:white;
+        background:#893667; 
+        text-decoration:none;
+        line-height:48px;
+        text-align:center;
+        border-radius:5px;
+        font-size:17px;
+        box-shadow:5px 5px 5px black;
+    }
+    #start:hover{
+       top:79%;
+    }
+    iframe{
+        position:absolute;
+        right:55px;
+        top:150px;
+    }
+</style>
+
+<a href="~/Account/Register" id="start">Register</a>
+
+<iframe width="700" height="450"
+        src="https://www.youtube.com/embed/Mmt1SyzJ0M0?autoplay=1&controls=0">
+</iframe>

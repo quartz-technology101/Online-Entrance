@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/content/csslib")
+
+<style>
+    body {
+        font-family: 'poppins',sans-serif;
+        background: rgb(252, 252, 223);
+    }
+
+
+    
+
+    main {
+        margin: 100px;
+    }
+
+  
+
+    h2 {
+        width: 12%;
+        margin: auto;
+        text-align: center;
+        margin-top: 100px;
+        font-family: 'poppins',sans-serif;
+        border-bottom: 2px solid #823966;
+         color:#823966;
+    }
+
+    @@media screen and (max-width: 768px) {
+        h2 {
+            width: 190px;
+            margin-top: 60px;
+            margin-bottom: 30px;
+        }
+
+        main {
+            margin: 10px;
+        }
+
+       
+    }
+</style>
+<main>
+    <h2>Result</h2>
+    <br />
+    <br /><br />
+
+    <table id="results" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Correct?</th>
+                <th>Topic</th>
+                <th>Submitted Time</th>
+            </tr>
+        </thead>
+        @{
+            var score = 0;
+        }
+        <tbody>
+            @foreach (var result in Model)
+            {
+                <tr>
+                    <td>@result.UserName</td>
+                    <td>@result.Question</td>
+                    <td>@result.UserInput</td>
+                    <td>@result.IsCorrect</td>
+                    @{
+                if (result.IsCorrect == true)
+                {
+                    score = score + 1;
+                }
+                    }
+                    <td>@result.TopicName</td>
+                    <td>@result.SubmittedTime</td>
+
+
+                </tr>
+            }
+           
+        </tbody>
+        <tr style="background:green;color:white;text-align:center"><td>Score=@score</td></tr>
+    </table>
+</main>
+
+<img class="big-circle" src="/Images/big-eclipse.svg" alt="">
+<img class="medium-circle" src="/Images/mid-eclipse.svg" alt="">
+<img class="small-circle" src="/Images/small-eclipse.svg" alt="">
+
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            $("#results").DataTable();
+               
+        });
+
+
+    </script>
+}
